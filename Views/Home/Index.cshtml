@@ -1,0 +1,119 @@
+﻿@model List<Speise>
+
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+
+    @*  @if (ViewData["Kategorien"] is not null)
+    {
+    var elem = ViewData["Kategorien"] as IEnumerable<SelectListItem>;
+    if (elem is not null)
+    {
+    foreach (var n in elem)
+    {
+    <li>@n.Text ist @n.Value</li>
+    }
+    <br />
+    <label class="control-label">Kategorien: </label>
+    <select form-control" asp-items="elem"></select>
+    }
+    }
+    <br /> *@
+
+    @*  <div class="form-group">
+    <!-- <label class="control-label">Kategorien: </label> -->
+    <form asp-action="CreateSpeise">
+
+    </form>
+    <!-- <select asp-for="speise.Sterne" form-control" asp-items="@((IEnumerable<SelectListItem>)ViewData["Kategorien"])"></select> -->
+    </div> *@
+
+    <div class="row">
+        @{
+            foreach (Speise speise in Model)
+            {
+                <div class="col m-3">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-header">
+                            <h5 class="card-title text-center">@Html.DisplayFor(modelItem => speise.Titel)</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">@speise.Notizen</p>
+                            @switch (speise.Sterne)
+                            {
+                                case 5:
+                                    <p class="card-text">⭐⭐⭐⭐⭐</p>
+                                    break;
+                                case 4:
+                                    <p class="card-text">⭐⭐⭐⭐</p>
+                                    break;
+                                case 3:
+                                    <p class="card-text">⭐⭐⭐</p>
+                                    break;
+                                case 2:
+                                    <p class="card-text">⭐⭐</p>
+                                    break;
+                                case 1:
+                                    <p class="card-text">⭐</p>
+                                    break;
+                                default:
+                                    <p class="card-text">Keine Sterne</p>
+                                    break;
+                            }
+                            <hr />
+                            <ul class="list-group list-group-flush">
+                                Benötigte Zutaten:
+                                @for (int i = 0; i < speise.Zutaten.Count; i++)
+                                {
+                                    <li class="list-group-item">@speise.Zutaten[i]</li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="card-footer">
+                            <a asp-route-id="@speise.Id" asp-controller="Home" asp-action="AddZutatForm" class="btn btn-primary text-left">Zutat hinzufügen</a>
+                            <button type="button" class="btn btn-danger text-right" onclick="deleteSpeise(@speise.Id)">Löschen</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <a asp-controller="Home" asp-action="CreateSpeiseForm" class="btn btn-info">+</a>
+
+</div>
+
+@section Scripts {
+    <script>
+        function deleteSpeise(id) {
+            Swal.fire({
+                title: 'Löschen bestätigen',
+                text: 'Wollen Sie wirklich löschen?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ja, löschen',
+                cancelButtonText: 'Abbrechen'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: `https://localhost:7077/api/Values/Delete?id=${id}`, // Hier wird die id als Query-Parameter in die URL eingefügt
+                        success: function (msg) {
+                            Swal.fire('Gelöscht!', 'Der Eintrag wurde erfolgreich gelöscht.', 'success').then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function (msg) {
+                            Swal.fire('Fehler!', 'Ein Fehler ist aufgetreten.', 'error');
+                        }
+                    });
+                }
+            });
+        }
+
+    </script>
+
+}

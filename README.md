@@ -18,3 +18,5 @@ var connectionString = builder.Configuration.GetConnectionString("Name of Db");
 builder.Services.AddDbContext(options => options.UseSqlite(connectionString));
 
 https://www.devglan.com/online-tools/text-encryption-decryption
+Xd4Djd3KPIIJ22vgPER6XQ==
+H6ydW4OJxXrGXxoK7B39vg==

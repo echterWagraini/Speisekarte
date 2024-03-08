@@ -87,33 +87,23 @@
 </div>
 
 @section Scripts {
-    <script>
+<script>
         function deleteSpeise(id) {
-            Swal.fire({
-                title: 'Löschen bestätigen',
-                text: 'Wollen Sie wirklich löschen?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Ja, löschen',
-                cancelButtonText: 'Abbrechen'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: "DELETE",
-                        url: `https://localhost:7077/api/Values/Delete?id=${id}`, // Hier wird die id als Query-Parameter in die URL eingefügt
-                        success: function (msg) {
-                            Swal.fire('Gelöscht!', 'Der Eintrag wurde erfolgreich gelöscht.', 'success').then(() => {
-                                location.reload();
-                            });
-                        },
-                        error: function (msg) {
-                            Swal.fire('Fehler!', 'Ein Fehler ist aufgetreten.', 'error');
-                        }
-                    });
-                }
-            });
+            var confirmation = confirm('Wollen Sie wirklich löschen?');
+
+            if (confirmation) {
+                $.ajax({
+                    type: "DELETE",
+                    url: `https://localhost:7189/api/Speisen/Delete?id=${id}`,
+                    success: function (msg) {
+                        alert('Der Eintrag wurde erfolgreich gelöscht.');
+                        location.reload();
+                    },
+                    error: function (msg) {
+                        alert('Ein Fehler ist aufgetreten.');
+                    }
+                });
+            }
         }
-
     </script>
-
 }

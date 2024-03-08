@@ -6,6 +6,7 @@
         public string Titel { get; set; }
         public string? Notizen { get; set; }
         public int? Sterne { get; set; }
+ 	[JsonIgnore]
         public List<Zutat> Zutaten { get; set; } = new List<Zutat>();
     }
 }
